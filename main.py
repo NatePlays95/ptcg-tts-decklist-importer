@@ -1,4 +1,4 @@
-from modules.parser import parseCardFromLine, filterLines
+from modules.parser import parseCardFromLine, filterLines, checkFallbackEnergy
 from modules.image_manip import makeDeckFromCardList
 # SDK
 from pokemontcgsdk import Card, RestClient
@@ -12,7 +12,7 @@ cardInfo = parseCardFromLine(input)
 key = API_KEY
 RestClient.configure(key)
 
-nome_arquivo = 'tests/parser/decklist_before_sv.txt'
+nome_arquivo = 'tests/parser/decklist_ligapokemon.txt'
 linhas = []
 try:
     with open(nome_arquivo, 'r') as arquivo:
@@ -28,11 +28,9 @@ linhas = filterLines(linhas)
 cards_list = []
 
 for linha in linhas:
-    cardInfo = parseCardFromLine(linha.strip())
-    setName = cardInfo['setName']
-    setNumber = cardInfo['setNumber']
+    cardInfo = parseCardFromLine(linha)
     
-    card_query = Card.where(q=f'set.ptcgoCode:{setName} number:{setNumber}')
+    card_query = Card.where(q=f'set.ptcgoCode:{cardInfo["setName"]} number:{cardInfo["setNumber"]}')
     card = False
     
     if (card_query != []):
@@ -42,8 +40,28 @@ for linha in linhas:
         for i in range(cardInfo["count"]):
             cards_list.append(card)
         print("FOUND:", cardInfo["count"], "x", card.name)
-    else:  
+        continue
+
+    # try energy fallback.
+    fallback = checkFallbackEnergy(linha)
+
+    if fallback == {}:
         print('ERROR:', "couldn't find", linha)
+        continue
+    
+    card_query = Card.where(q=f'set.ptcgoCode:{fallback["setName"]} number:{fallback["setNumber"]}')
+    if (card_query != []):
+        card = card_query[0]
+        
+    if card:
+        for i in range(fallback["count"]):
+            cards_list.append(card)
+        print("FOUND by energy fallback:", fallback["count"], "x", card.name)
+        continue
+    
+    else:
+        print('ERROR:', "couldn't find", linha, "by fallback.")
+
 
 # make deck
 filename = "decklist_complete"
