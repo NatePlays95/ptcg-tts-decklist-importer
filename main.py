@@ -1,9 +1,9 @@
 from modules.parser import parseCardFromLine, filterLines
-
+from modules.image_manip import test_makeDeckHiresCardList
 # SDK
 from pokemontcgsdk import Card, RestClient
-
-# CHAVE DA API (fora do repositorio)
+from pokemontcgsdk.cardimage import CardImage
+# API KEY from root/api_key.py
 from api_key import API_KEY
 
 input = "1 Professor's Letter BKT 146a"
@@ -25,17 +25,28 @@ except Exception as e:
 #print("Lines before filtering: ", linhas)
 linhas = filterLines(linhas)
 #print("Lines after filtering: ", linhas)
+cards_list = []
 
 for linha in linhas:
     cardInfo = parseCardFromLine(linha.strip())
     setName = cardInfo['setName']
     setNumber = cardInfo['setNumber']
-    card = Card.where(q=f'set.ptcgoCode:{setName} number:{setNumber}')
-    if (card != []):
-        print(card[0].name)
+    
+    card_query = Card.where(q=f'set.ptcgoCode:{setName} number:{setNumber}')
+    card = False
+    
+    if (card_query != []):
+        card = card_query[0]
+
+    if card:
+        for i in range(cardInfo["count"]):
+            cards_list.append(card)
+        print("FOUND:", cardInfo["count"], "x", card.name)
     else:  
-        print('FAIL')
+        print('ERROR:', "couldn't find", linha)
 
-#cards = Card.where(q='set.ptcgoCode:CRE number:22')
-#print(cards)
+#print("Card data: ", cards_list[0])
+#images = CardImage
 
+# make deck
+#test_makeDeckHiresCardList(cards_list)

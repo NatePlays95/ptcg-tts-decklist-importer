@@ -3,7 +3,14 @@ from io import BytesIO
 from PIL import Image, ImageOps
 from urllib.request import urlopen
 import requests
+# SDK
+from pokemontcgsdk.cardimage import CardImage
+from pokemontcgsdk import Card
+# KEY
 from api_key import API_KEY
+
+
+
 
 TEST_FILEPATH = os.path.dirname(__file__) + "/../tests/image_manip/"
 
@@ -29,7 +36,7 @@ def getHiresAtlas():
 
 ## 1 indexed.
 def getHiresPositionAtIndex(index:int):
-    #index -= 1
+    index -= 1
     x = (index % 10) * 734
     y = (index // 10) * 1024
     return [x, y]
@@ -43,18 +50,27 @@ def getHiresBackImage(is_japanese=False):
     return img
     #return Image.open(TEST_FILEPATH + "charizard_hires.png")
 
-
-
+def getHiresCardImage(card_image:CardImage):
+    url = card_image.large
+    response = requests.get(url, headers = {"X-Api-Key": API_KEY})
+    img = Image.open(BytesIO(response.content))
+    img = ImageOps.fit(img, (734, 1024))
+    return img
 
 #### LOW RESOLUTION ####
 
-def getHiresPositionAtIndex(index:int):
-    i = index - 1
-    x = (i % 10) * 734
-    y = (i // 10) * 1024
-    return [x, y]
+# def getHiresPositionAtIndex(index:int):
+#     i = index - 1
+#     x = (i % 10) * 734
+#     y = (i // 10) * 1024
+#     return [x, y]
 
-
+def getLowresCardImage(card_image:CardImage):
+    url = card_image.small
+    response = requests.get(url, headers = {"X-Api-Key": API_KEY})
+    img = Image.open(BytesIO(response.content))
+    img = ImageOps.fit(img, (734, 1024)) # TODO: change to actual lowres size
+    return img
 
 
 #### DEBUG TESTS
@@ -64,8 +80,7 @@ def test_getHiresPalafin():
     img = Image.open(BytesIO(response.content))
     return img
 
-
-def test_makeDeckHires():
+def test_makeDeckHiresCharizard():
     atlas = getHiresAtlas()
     
     # 57 charizards
@@ -81,4 +96,20 @@ def test_makeDeckHires():
     
     atlas.save(TEST_FILEPATH + "deck_with_charizard.png")
 
-test_makeDeckHires()
+def test_makeDeckHiresCardList(cards_list:list[Card]):
+    atlas = getHiresAtlas()
+    print("Atlas created.")
+    index = 1
+    for card in cards_list:
+        card_image = card.images
+        img = getLowresCardImage(card_image) # TODO: change to hi res after low res is sorted.
+        position = getHiresPositionAtIndex(index)
+        atlas.paste(img, position) # position goes from x,y to x,y,w,h.
+        print("pasted", card.name, "onto atlas, index", index, "and position", position)
+        
+        index += 1
+    # back image at n° 70
+    atlas.paste(getHiresBackImage(), getHiresPositionAtIndex(70))
+    atlas.save(TEST_FILEPATH + "deck_from_decklist.png")
+
+    print("Atlas saved.")
