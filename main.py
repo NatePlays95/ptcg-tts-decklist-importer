@@ -12,7 +12,7 @@ cardInfo = parseCardFromLine(input)
 key = API_KEY
 RestClient.configure(key)
 
-nome_arquivo = 'tests/parser/decklist_before_sv.txt'
+nome_arquivo = 'tests/parser/decklist_after_sv.txt'
 linhas = []
 try:
     with open(nome_arquivo, 'r') as arquivo:
@@ -45,8 +45,5 @@ for linha in linhas:
     else:  
         print('ERROR:', "couldn't find", linha)
 
-#print("Card data: ", cards_list[0])
-#images = CardImage
-
 # make deck
-#test_makeDeckHiresCardList(cards_list)
+test_makeDeckHiresCardList(cards_list)

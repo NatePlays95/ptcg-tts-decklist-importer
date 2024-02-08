@@ -96,7 +96,7 @@ def test_makeDeckHiresCharizard():
     
     atlas.save(TEST_FILEPATH + "deck_with_charizard.png")
 
-def test_makeDeckHiresCardList(cards_list:list[Card]):
+def test_makeDeckHiresCardList(cards_list:[Card]):
     atlas = getHiresAtlas()
     print("Atlas created.")
     index = 1
