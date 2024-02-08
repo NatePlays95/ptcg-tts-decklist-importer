@@ -4,12 +4,12 @@ from modules.parser import parseCardFromLine
 from pokemontcgsdk import Card, RestClient
 
 # CHAVE DA API (fora do repositorio)
-from api_key import api_key
+from api_key import API_KEY
 
 input = "1 Professor's Letter BKT 146a"
 cardInfo = parseCardFromLine(input)
 
-key = api_key()
+key = API_KEY
 RestClient.configure(key)
 
 nome_arquivo = 'test.txt'
