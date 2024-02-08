@@ -1,5 +1,5 @@
 from modules.parser import parseCardFromLine, filterLines
-from modules.image_manip import test_makeDeckHiresCardList
+from modules.image_manip import makeDeckFromCardList
 # SDK
 from pokemontcgsdk import Card, RestClient
 from pokemontcgsdk.cardimage import CardImage
@@ -46,4 +46,5 @@ for linha in linhas:
         print('ERROR:', "couldn't find", linha)
 
 # make deck
-test_makeDeckHiresCardList(cards_list)
+filename = "decklist_complete"
+makeDeckFromCardList(filename, cards_list)

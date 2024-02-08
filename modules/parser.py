@@ -37,3 +37,4 @@ def parseCardFromLine(line:str) -> dict:
     cardInfo["name"] = ' '.join(splitLine)
 
     return cardInfo
+

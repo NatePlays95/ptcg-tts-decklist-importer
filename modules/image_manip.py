@@ -10,13 +10,14 @@ from pokemontcgsdk import Card
 from api_key import API_KEY
 
 
+#### MODULE-WIDE VARIABLES
+
+## change this to true to download hq scans.
+__USE_HIRES__ = False
 
 
 TEST_FILEPATH = os.path.dirname(__file__) + "/../tests/image_manip/"
-
 TEST_URL_PALAFIN_HIRES = "https://images.pokemontcg.io/sv4pt5/225_hires.png"
-
-TEST_API_KEY = ""
 
 ## Standard cards since Black and White are available in pokemontcg.io at the same size.
 ## in hi-res at 734 x 1024, in lo-res at 245 x 342.
@@ -28,7 +29,62 @@ TEST_API_KEY = ""
 
 
 
-#### HIGH RESOLUTION ####
+#### MULTIPLE RES CARD SEARCH
+
+def getAtlas():
+    #return Image.open(TEST_FILEPATH + "deck_hires.png")
+    return Image.new(mode="RGBA", size=(7340, 7168))
+
+def getBackImage(is_japanese=False): # TODO: find the correct japanese back image
+    url = "https://images.pokemontcg.io/" # use the fail search image as the back image for now
+    response = requests.get(url, headers = {"X-Api-Key": API_KEY})
+    img = Image.open(BytesIO(response.content))
+    img = ImageOps.fit(img, (734, 1024))
+    return img
+
+def getCardImage(card_image:CardImage):
+    url = card_image.large if __USE_HIRES__ else card_image.small
+    response = requests.get(url, headers = {"X-Api-Key": API_KEY})
+    img = Image.open(BytesIO(response.content))
+    img = ImageOps.fit(img, (734, 1024))
+    return img
+
+## 1 indexed.
+def getAtlasPositionAtIndex(index:int):
+    index -= 1
+    x = (index % 10) * 734
+    y = (index // 10) * 1024
+    return [x, y]
+
+def makeDeckFromCardList(file_name:str, cards_list:[Card]):
+    atlas = getAtlas() 
+    #print_log("Atlas created.")
+    index = 1
+    for card in cards_list:
+        card_image = card.images
+        img = getCardImage(card_image)
+        position = getAtlasPositionAtIndex(index)
+        atlas.paste(img, position) # position goes from x,y to x,y,w,h.
+        #print_log("pasted", card.name, "onto atlas, index", index, "and position", position)
+        
+        index += 1
+    # back image at n° 70
+    atlas.paste(getBackImage(), getAtlasPositionAtIndex(70))
+    
+    atlas.save(TEST_FILEPATH + file_name + ".png") # TODO: change filepath to "exports" folder
+    #print_log("Atlas saved.")
+
+############
+
+
+
+
+
+
+
+
+## TODO: Delete these.
+#### OLDHIGH RESOLUTION ####
 
 ## TODO: change to blank file or something
 def getHiresAtlas():
@@ -73,6 +129,10 @@ def getLowresCardImage(card_image:CardImage):
     return img
 
 
+
+
+
+
 #### DEBUG TESTS
 
 def test_getHiresPalafin():
@@ -102,7 +162,7 @@ def test_makeDeckHiresCardList(cards_list:[Card]):
     index = 1
     for card in cards_list:
         card_image = card.images
-        img = getLowresCardImage(card_image) # TODO: change to hi res after low res is sorted.
+        img = getLowresCardImage(card_image)
         position = getHiresPositionAtIndex(index)
         atlas.paste(img, position) # position goes from x,y to x,y,w,h.
         print("pasted", card.name, "onto atlas, index", index, "and position", position)
