@@ -12,7 +12,7 @@ cardInfo = parseCardFromLine(input)
 key = API_KEY
 RestClient.configure(key)
 
-nome_arquivo = 'tests/parser/decklist_after_sv.txt'
+nome_arquivo = 'tests/parser/decklist_before_sv.txt'
 linhas = []
 try:
     with open(nome_arquivo, 'r') as arquivo:
