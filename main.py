@@ -1,4 +1,4 @@
-from modules.parser import parseCardFromLine
+from modules.parser import parseCardFromLine, filterLines
 
 # SDK
 from pokemontcgsdk import Card, RestClient
@@ -12,7 +12,7 @@ cardInfo = parseCardFromLine(input)
 key = API_KEY
 RestClient.configure(key)
 
-nome_arquivo = 'tests/parser/decklist_after_sv.txt'
+nome_arquivo = 'tests/parser/decklist_before_sv.txt'
 linhas = []
 try:
     with open(nome_arquivo, 'r') as arquivo:
@@ -22,6 +22,10 @@ except FileNotFoundError:
 except Exception as e:
     print(f'Ocorreu um erro: {e}')
 
+#print("Lines before filtering: ", linhas)
+linhas = filterLines(linhas)
+#print("Lines after filtering: ", linhas)
+
 for linha in linhas:
     cardInfo = parseCardFromLine(linha.strip())
     setName = cardInfo['setName']
@@ -30,9 +34,7 @@ for linha in linhas:
     if (card != []):
         print(card[0].name)
     else:  
-        print('nada')
-
-
+        print('FAIL')
 
 #cards = Card.where(q='set.ptcgoCode:CRE number:22')
 #print(cards)
