@@ -2,6 +2,8 @@
 
 lineRegex = "^\s*\**\s*(?P<Count>\d+)\s+(?P<Name>.+)\s+(?P<Set>[A-Za-z0-9_-]+)\s+(?P<NumberInSet>[A-Za-z0-9]+)$"
 
+
+
 ## The average line looks like this: "1 Professor's Letter BKT 146a"
 ## if we split on ' ' we get:
 ## "1", "Professor's", "Letter", "BKT", "146a"

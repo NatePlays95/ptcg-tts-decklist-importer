@@ -12,7 +12,7 @@ cardInfo = parseCardFromLine(input)
 key = API_KEY
 RestClient.configure(key)
 
-nome_arquivo = 'test.txt'
+nome_arquivo = 'tests/parser/decklist_after_sv.txt'
 linhas = []
 try:
     with open(nome_arquivo, 'r') as arquivo:
@@ -34,6 +34,6 @@ for linha in linhas:
 
 
 
-cards = Card.where(q='set.ptcgoCode:CRE number:22')
-print(cards)
+#cards = Card.where(q='set.ptcgoCode:CRE number:22')
+#print(cards)
 
