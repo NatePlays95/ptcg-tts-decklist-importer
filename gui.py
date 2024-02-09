@@ -9,6 +9,8 @@ def handle_deck_list(text:str):
     cards_list = text.split('\n')
     cards_list = parseDecklistLines(cards_list)
     makeDeckFromCardListWeb("deck_list", cards_list)
+    print("deck pronto.")
+    eel.on_deck_finished()
 
 @eel.expose # Expose this function to Javascript
 def say_hello_py(x):

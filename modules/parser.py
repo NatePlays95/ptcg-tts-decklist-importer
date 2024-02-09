@@ -23,9 +23,10 @@ def parseDecklistLines(lines:[str]):
         
         if card == False: # if query failed, # try energy fallback.
             card_info = parseFallbackEnergy(line)
-            card = queryCard(card_info)
-            if card != False:
-                print("Found energy card via fallback")
+            if card_info != {}:
+                card = queryCard(card_info)
+                if card != False:
+                    print("Found energy card via fallback")
         
         if card != False:
             print("FOUND:", line)

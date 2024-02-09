@@ -50,8 +50,13 @@
     const textarea = document.getElementById("deck-list");
     
     const generate_button = document.getElementsByClassName("generate-button")[0];
-    generate_button.onclick = () => {
-        eel.handle_deck_list(textarea.value)
+    generate_button.onclick = async function() {
+        let n = await eel.handle_deck_list(textarea.value)();
+        on_deck_finished();
+    }
+
+    eel.expose(on_deck_finished);
+    function on_deck_finished() {
         let hidden_div = document.getElementById('hidden-div')
         hidden_div.style.display = "block" 
     }
