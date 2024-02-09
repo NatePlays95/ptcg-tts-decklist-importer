@@ -26,6 +26,7 @@ Inspired by [TTS Deck Converter](https://github.com/jeandeaual/tts-deckconverter
 ```sh
 pip install pillow
 pip install pokemontcgsdk
+pip install ratelimit
 ```
 4. Create a file named "api_key.py" in the project's root folder. Include the following code inside it:
 ```text
