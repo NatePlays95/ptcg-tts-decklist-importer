@@ -8,8 +8,10 @@ Inspired by [TTS Deck Converter](https://github.com/jeandeaual/tts-deckconverter
 ## Features
 - Opens decklists from .txt files
 - Exports images to be used in TTS custom decks
+- Exports json files to be opened as TTS saved objects
 - Supports cards from Black and White onwards, including cards after Scarlet and Violet
 
+<img src="https://github.com/NatePlays95/ptcg-tts-decklist-importer/blob/main/readme_image_1.jpeg?raw=true" height="400"><img src="https://github.com/NatePlays95/ptcg-tts-decklist-importer/blob/main/readme_image_2.jpeg?raw=true" height="400">
 
 ## Compatible decklist websites
 - [pokemoncard.io](https://pokemoncard.io)
