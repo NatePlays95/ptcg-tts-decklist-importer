@@ -1,5 +1,5 @@
-#print("parser on")
-
+from ratelimit import limits, sleep_and_retry
+from datetime import timedelta
 # SDK
 from pokemontcgsdk import Card
 
@@ -18,6 +18,7 @@ def parseDecklistLines(lines:[str]):
     
     for line in lines:
         card_info = parseCardFromLine(line)
+        print("ATTEMPT:", card_info["name"])
         card = queryCard(card_info)
         
         if card == False: # if query failed, # try energy fallback.
@@ -36,7 +37,9 @@ def parseDecklistLines(lines:[str]):
     
     return cards_list
 
-
+# TODO: make way to detect lack of api key to throttle calls
+@sleep_and_retry
+@limits(calls=1, period=timedelta(seconds=2).total_seconds())
 def queryCard(card_info):
     card_query = Card.where(q=f'set.ptcgoCode:{card_info["setName"]} number:{card_info["setNumber"]}')
 

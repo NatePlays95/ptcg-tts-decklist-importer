@@ -73,8 +73,10 @@ def makeDeckFromCardList(file_name:str, cards_list:[Card]):
     # back image at n° 70
     atlas.paste(getBackImage(), getAtlasPositionAtIndex(70))
     
-    atlas.save(EXPORT_FILEPATH + file_name + ".png") # TODO: change filepath to "exports" folder
+    atlas.save(EXPORT_FILEPATH + file_name + ".png")
     print("Atlas saved.")
+
+
 
 # TODO: reaproveitar codigo
 def makeDeckFromCardListWeb(file_name:str, cards_list:[Card]):
@@ -92,7 +94,7 @@ def makeDeckFromCardListWeb(file_name:str, cards_list:[Card]):
     # back image at n° 70
     atlas.paste(getBackImage(), getAtlasPositionAtIndex(70))
     
-    atlas.save(WEB_FILEPATH + file_name + ".png") # TODO: change filepath to "exports" folder
+    atlas.save(WEB_FILEPATH + file_name + ".png") 
     print("Atlas saved.")
 
 ############

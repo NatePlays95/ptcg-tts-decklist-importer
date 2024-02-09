@@ -15,4 +15,4 @@ def say_hello_py(x):
     print('content:\n%s' % x)
 
 eel.init('static_web_folder')
-eel.start('index.html')
+eel.start('index.html',mode='default') # mode default to open on user's default browser, not just chome
