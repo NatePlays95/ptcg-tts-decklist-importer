@@ -12,9 +12,9 @@ Inspired by [TTS Deck Converter](https://github.com/jeandeaual/tts-deckconverter
 
 
 ## Compatible decklist websites
-- [pokemoncard.io](pokemoncard.io)
-- [limitlesstcg.com](limitlesstcg.com)
-- [ligapokemon.com.br](ligapokemon.com.br)
+- [pokemoncard.io](https://pokemoncard.io)
+- [limitlesstcg.com](https://limitlesstcg.com)
+- [ligapokemon.com.br](https://ligapokemon.com.br)
 
 
 ## How to use:
