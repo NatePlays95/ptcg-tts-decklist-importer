@@ -29,5 +29,5 @@ cards_list = parseDecklistLines(lines)
 
 # make deck
 filename = "decklist_complete"
-#makeDeckFromCardList(filename, cards_list)
-makeFullJson(filename, cards_list)
+makeDeckFromCardList(filename, cards_list)
+#makeFullJson(filename, cards_list)
