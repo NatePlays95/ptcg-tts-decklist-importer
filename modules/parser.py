@@ -1,10 +1,59 @@
 #print("parser on")
 
+# SDK
+from pokemontcgsdk import Card
+
 lineRegex = "^\s*\**\s*(?P<Count>\d+)\s+(?P<Name>.+)\s+(?P<Set>[A-Za-z0-9_-]+)\s+(?P<NumberInSet>[A-Za-z0-9]+)$"
 __digits_list__ = ['0','1','2','3','4','5','6','7','8','9']
 __types_list__ = ["Grass", "Fire", "Water", "Lightning", "Psychic", "Fighting", "Darkness", "Metal", "Fairy"]
 __basic_energy_setname__ = "SUM" # Sun and Moon, as it still had fairy energy.
 __basic_energy_set_offset__ = 163 # energies start at 164 for energy 1
+
+
+
+
+def parseDecklistLines(lines:[str]):
+    cards_list = []
+    lines = filterLines(lines)
+    
+    for line in lines:
+        card_info = parseCardFromLine(line)
+        card = queryCard(card_info)
+        
+        if card == False: # if query failed, # try energy fallback.
+            card_info = parseFallbackEnergy(line)
+            card = queryCard(card_info)
+            if card != False:
+                print("Found energy card via fallback")
+        
+        if card != False:
+            print("FOUND:", line)
+            for i in range(card_info["count"]):
+                cards_list.append(card)
+            continue
+
+        print('ERROR:', "couldn't find", line)
+    
+    return cards_list
+
+
+def queryCard(card_info):
+    card_query = Card.where(q=f'set.ptcgoCode:{card_info["setName"]} number:{card_info["setNumber"]}')
+
+    if card_query == []: # if query failed,
+        # try query by name, fallback for SV cards. TODO: remove this fallback when SV set codes are fixed.
+        query_fstring = f'name:\"{card_info["name"]}\" number:{card_info["setNumber"]}'
+        print("trying name fallback on", query_fstring)
+        card_query = Card.where(q=query_fstring)
+        if card_query != []: 
+            print("Found SV card via name fallback.")
+    
+    if len(card_query) > 0:
+        if len(card_query) > 1: print("Multiple results??", card_query) # shouldn't happen?
+        return card_query[0] # type 'Card'
+
+    return False
+
 
 ## Returns a new array with empty lines removed
 ## and divider lines "Pokémon, Trainer, Items" removed.
@@ -53,7 +102,7 @@ def parseCardFromLine(line:str) -> dict:
     return cardInfo
 
 ## Use this if the card is a promo energy from a set that's not recognized by the API.
-def checkFallbackEnergy(line:str) -> dict:
+def parseFallbackEnergy(line:str) -> dict:
     line = line.strip()
     
     if not ("Energy" in line): return {}

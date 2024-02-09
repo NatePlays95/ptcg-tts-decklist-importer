@@ -58,21 +58,21 @@ def getAtlasPositionAtIndex(index:int):
 
 def makeDeckFromCardList(file_name:str, cards_list:[Card]):
     atlas = getAtlas() 
-    #print_log("Atlas created.")
+    print("Atlas created.")
     index = 1
     for card in cards_list:
         card_image = card.images
         img = getCardImage(card_image)
         position = getAtlasPositionAtIndex(index)
         atlas.paste(img, position) # position goes from x,y to x,y,w,h.
-        #print_log("pasted", card.name, "onto atlas, index", index, "and position", position)
+        print("pasted", card.name, "onto atlas, index", index, "and position", position)
         
         index += 1
     # back image at n° 70
     atlas.paste(getBackImage(), getAtlasPositionAtIndex(70))
     
     atlas.save(TEST_FILEPATH + file_name + ".png") # TODO: change filepath to "exports" folder
-    #print_log("Atlas saved.")
+    print("Atlas saved.")
 
 ############
 
