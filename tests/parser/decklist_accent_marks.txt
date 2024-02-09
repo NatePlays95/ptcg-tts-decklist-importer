@@ -1,0 +1,57 @@
+1 Bronzor TEU 100
+1 Bronzong PHF 61
+1 Galarian Meowth RCL 126
+1 Galarian Perrserker SSH 128
+1 Pawniard TEU 104
+1 Bisharp TEU 105
+1 Metagross SIT 119
+1 Zacian CRZ 94
+1 Cobalion STS 74
+1 Jirachi TEU 99
+1 Zamazenta CRZ 97
+
+1 Boss's Orders PAL 172
+1 Guzma BUS 115
+1 Arven OBF 186
+1 Cynthia UPR 119
+1 Colress PLS 118
+1 Mallow GRI 127
+1 Raihan CRZ 140
+1 Guzma &amp; Hala CEC 193
+1 Klara CRE 145
+1 Professor's Research PAF 88
+1 N FCO 105
+1 VS Seeker PHF 109
+1 Battle Compressor PHF 92
+1 Metal Saucer SSH 170
+1 Switching Cups EVS 162
+1 Escape Rope BST 125
+1 Quick Ball FST 237
+1 Level Ball BST 129
+1 Evolution Incense SSH 163
+1 Ultra Ball PAF 91
+1 Rescue Stretcher GRI 130
+1 Scoop Up Net RCL 165
+1 Acro Bike CES 123
+1 Switch SVI 194
+1 Bicycle PLS 117
+1 Max Revive GEN 65
+1 Pal Pad SVI 182
+1 Professor's Letter BKT 146
+1 Field Blower GRI 125
+1 Hisuian Heavy Ball ASR 146
+1 Trainers' Mail ROS 92
+1 Lana's Fishing Rod CEC 195
+1 Nest Ball PAF 84
+1 Pokégear 3.0 SVI 186
+1 Capturing Aroma SIT 153
+1 Metal Goggles TEU 148
+1 Float Stone BKT 137
+1 Escape Board UPR 122
+1 Muscle Band XY 121
+1 Artazon PAF 76
+1 PokéStop PGO 68
+
+6 Metal Energy 8
+1 Coating Metal Energy VIV 163
+1 Shield Energy PRC 143

@@ -14,10 +14,10 @@ from api_key import API_KEY
 key = API_KEY
 RestClient.configure(key)
 
-INPUT_FILE = 'tests/parser/decklist_ligapokemon.txt'
+INPUT_FILE = 'tests/parser/decklist_accent_marks.txt'
 lines = []
 try:
-    with open(INPUT_FILE, 'r') as file:
+    with open(INPUT_FILE, 'r', encoding="utf-8") as file:
         lines = file.readlines()
 except FileNotFoundError:
     print(f'File \"{INPUT_FILE}\" was not found')
