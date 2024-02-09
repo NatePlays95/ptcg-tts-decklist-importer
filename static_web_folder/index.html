@@ -10,7 +10,7 @@
     <div class="everything-wrapper">
         <div class="deck-name-wrapper">
             <label>Deck Name</label>
-            <input>
+            <input id="deck-name">
         </div>
         <div class="deck-list-wrapper">
             <label>Deck List</label>
@@ -20,6 +20,20 @@
         <div class="buttons-wrapper">
             <button class="generate-button">CREATE DECK!</button>
         </div>
+
+        <div class="img-wrapper">
+            <div id="hidden-div" style="display: none; width: 100%; height: 100%;">
+                <center>
+                    <img src="deck_list.png" alt="deck_list">
+                </center>
+            </div>
+        </div>
+
+        <div>
+            <label>Deck ready</label>
+            <p>Just save it!</p>
+        </div>
+        
     </div>
 </body>
 </html>
@@ -31,4 +45,15 @@
     }
 
     eel.say_hello_py("Javascript World!"); // Call a Python function
+
+    const input = document.getElementById("deck-name")
+    const textarea = document.getElementById("deck-list");
+    
+    const generate_button = document.getElementsByClassName("generate-button")[0];
+    generate_button.onclick = () => {
+        eel.handle_deck_list(textarea.value)
+        let hidden_div = document.getElementById('hidden-div')
+        hidden_div.style.display = "block" 
+    }
+
 </script>

@@ -1,6 +1,7 @@
 body {
     margin: 0;
     padding: 0;
+    background-color: #1b1f23;
 }
 
 .everything-wrapper {
@@ -60,6 +61,23 @@ textarea {
     padding: 10px;
     font-size: 20px;
     cursor: pointer;
+}
+
+.img-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 25px 0;
+}
+
+img {
+    max-width: 50%;
+    max-height: 50%;
+}
+
+p {
+    color: #b392f0;
+    font-family: monospace;
+    font-size: 20px;
 }
 
 /* light #282a36 */

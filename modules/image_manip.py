@@ -18,6 +18,7 @@ __USE_HIRES__ = False
 
 TEST_FILEPATH = os.path.dirname(__file__) + "/../tests/image_manip/"
 EXPORT_FILEPATH = os.path.dirname(__file__) + "/../exports/"
+WEB_FILEPATH = os.path.dirname(__file__) + "/../static_web_folder/"
 TEST_URL_PALAFIN_HIRES = "https://images.pokemontcg.io/sv4pt5/225_hires.png"
 
 ## Standard cards since Black and White are available in pokemontcg.io at the same size.
@@ -73,6 +74,25 @@ def makeDeckFromCardList(file_name:str, cards_list:[Card]):
     atlas.paste(getBackImage(), getAtlasPositionAtIndex(70))
     
     atlas.save(EXPORT_FILEPATH + file_name + ".png") # TODO: change filepath to "exports" folder
+    print("Atlas saved.")
+
+# TODO: reaproveitar codigo
+def makeDeckFromCardListWeb(file_name:str, cards_list:[Card]):
+    atlas = getAtlas() 
+    print("Atlas created.")
+    index = 1
+    for card in cards_list:
+        card_image = card.images
+        img = getCardImage(card_image)
+        position = getAtlasPositionAtIndex(index)
+        atlas.paste(img, position) # position goes from x,y to x,y,w,h.
+        print("pasted", card.name, "onto atlas, index", index, "and position", position)
+        
+        index += 1
+    # back image at n° 70
+    atlas.paste(getBackImage(), getAtlasPositionAtIndex(70))
+    
+    atlas.save(WEB_FILEPATH + file_name + ".png") # TODO: change filepath to "exports" folder
     print("Atlas saved.")
 
 ############
