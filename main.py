@@ -13,18 +13,18 @@ from api_key import API_KEY
 key = API_KEY
 RestClient.configure(key)
 
-nome_arquivo = 'tests/parser/decklist_ligapokemon.txt'
-linhas = []
+INPUT_FILE = 'tests/parser/decklist_ligapokemon.txt'
+lines = []
 try:
-    with open(nome_arquivo, 'r') as arquivo:
-        linhas = arquivo.readlines()
+    with open(INPUT_FILE, 'r') as file:
+        lines = file.readlines()
 except FileNotFoundError:
-    print(f'O arquivo {nome_arquivo} não foi encontrado.')
+    print(f'File \"{INPUT_FILE}\" was not found')
 except Exception as e:
-    print(f'Ocorreu um erro: {e}')
+    print(f'ERROR:: {e}')
 
 # get cards
-cards_list = parseDecklistLines(linhas)
+cards_list = parseDecklistLines(lines)
 
 # make deck
 filename = "decklist_complete"
