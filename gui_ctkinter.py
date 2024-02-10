@@ -75,13 +75,11 @@ def createTabJsonElements(tab):
 
 
 def onProgressIncreased(current_progress):
-    print("step")
     PROGRESS_BAR.step()
 
 
 def onComboboxBackClicked(choice):
     CHOSEN_CARDBACK = choice
-    #print("Chosen cardback:", CHOSEN_CARDBACK)
 
 
 def onBtnGenerateJsonClicked():

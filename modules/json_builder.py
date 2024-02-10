@@ -1,12 +1,18 @@
-import os
 import json
+import os
+import modules.utils as utils
 #from modules.image_manip import getCardImage
 
 
 
 TEST_FILEPATH = os.path.dirname(__file__) + "/../tests/json_builder/"
-TEMPLATE_FILEPATH = TEST_FILEPATH + 'deck_template.json'
-EXPORT_FILEPATH = os.path.dirname(__file__) + "/../exports/"
+#TEMPLATE_FILEPATH = TEST_FILEPATH + 'deck_template.json'
+TEMPLATE_FILEPATH = "assets/deck_template.json"
+CARDCUSTOM_FILEPATH = "assets/cardcustom.json"
+#EXPORT_FILEPATH = os.path.dirname(__file__) + "/../exports/"
+EXPORT_FILEPATH = "exports/"
+if not os.path.exists(EXPORT_FILEPATH):
+    os.makedirs(EXPORT_FILEPATH)
 
 URL_BACKIMAGE = "http://cloud-3.steamusercontent.com/ugc/998016607072061655/9BE66430CD3C340060773E321DDD5FD86C1F2703/" # from jeandeaual
 
@@ -27,7 +33,7 @@ __type_letters__ = {
 
 def makeFullJson(filename, cards_list):
     print("Begun making JSON file.")
-    template_file = open(TEMPLATE_FILEPATH)
+    template_file = open(utils.resource_path(TEMPLATE_FILEPATH))
     deck_object = json.load(template_file)
    
     deck_state = deck_object["ObjectStates"][0]
@@ -69,7 +75,7 @@ def makeCustomDeckField(cards_list):
 
 def makeContainedObjectsField(cards_list):
     field_ContainedObjects = []
-    cardcustom_filepath = TEST_FILEPATH + "cardcustom.json"
+    cardcustom_filepath = utils.resource_path(CARDCUSTOM_FILEPATH)
     # print(cardcustom_filepath)
     cardcustom_template = open(cardcustom_filepath, "r")
     cardcustom_object = json.load(cardcustom_template)
@@ -122,7 +128,7 @@ def makeDescription(card) -> str:
     
         if card.abilities != None:
             for ability in card.abilities:
-                desc += "[ff0000][b]" + ability.type + ":[ffffff]  " + ability.name + "[/b]\n"
+                desc += "[ff0000][b]" + ability.type + ":  " + ability.name + "[ffffff][/b]\n"
                 desc += ability.text + "\n\n"
 
         if card.attacks != None:
