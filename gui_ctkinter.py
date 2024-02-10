@@ -11,6 +11,8 @@ global PROGRESS_BAR
 global TABS
 global TEXTBOX_DECKLIST
 global ENTRY_DECKNAME
+global CTKVAR_COMBOBOXBACK
+global ENTRY_CUSTOMCARDBACK
 global BTN_GENERATE_JSON
 
 CHOSEN_CARDBACK = "Standard"
@@ -40,7 +42,7 @@ def createElements(app):
     TABS = CTkTabview(master=app, width=800, height=600)
     TABS.pack(expand=True, padx=20, pady=20, anchor="center")
     TABS.add("Export as JSON Object")  # add tab at the end
-    TABS.add("Export as Card Sheet")  # add tab at the end
+    #TABS.add("Export as Card Sheet")  # add tab at the end
 
     createTabJsonElements(TABS.tab("Export as JSON Object"))
 
@@ -50,7 +52,7 @@ def createTabJsonElements(tab):
     label_decklist.pack(padx=20,pady=10)
 
     global TEXTBOX_DECKLIST
-    TEXTBOX_DECKLIST = CTkTextbox(master=tab, width=400, height=200)
+    TEXTBOX_DECKLIST = CTkTextbox(master=tab, width=400, height=200, wrap="none")
     TEXTBOX_DECKLIST.pack()
     TEXTBOX_DECKLIST.insert("0.0", "Paste your decklist here.")
 
@@ -64,10 +66,15 @@ def createTabJsonElements(tab):
     frame_back = CTkFrame(tab, width=400)
     frame_back.pack(padx=20, pady=10)
     label_back = CTkLabel(master=frame_back, text="Card back texture:", font=("Rubik", 20))
-    label_back.pack(side=LEFT, padx=20, pady=10)
-    var_cardback = StringVar(value="Standard") 
-    combobox_back = CTkComboBox(master=frame_back, state="readonly", values=["Standard", "Japanese"], variable=var_cardback, command=onComboboxBackClicked)
-    combobox_back.pack(side=RIGHT, padx=20, pady=10)
+    label_back.grid(row=0, column=0, padx=20, pady=10)
+    global CTKVAR_COMBOBOXBACK
+    CTKVAR_COMBOBOXBACK = StringVar(value="Standard") 
+    combobox_back = CTkComboBox(master=frame_back, state="readonly", values=["Standard", "Japanese", "Custom"], variable=CTKVAR_COMBOBOXBACK, command=onComboboxBackClicked)
+    #combobox_back.bind('<<ComboboxSelected>>',onComboboxBackClicked)
+    combobox_back.grid(row=0, column=1, padx=20, pady=10)
+    
+    global ENTRY_CUSTOMCARDBACK
+    ENTRY_CUSTOMCARDBACK = CTkEntry(master=frame_back, width=400, height=30, placeholder_text="https://forum.tcgone.net/uploads/default/original/2X/7/77fe3f5ed22d5ffb44fa2ccff4a441ee2983b3ec.png")
 
     global BTN_GENERATE_JSON
     BTN_GENERATE_JSON = CTkButton(tab, text="Generate JSON", font=("Rubik bold", 20), width=230, command=onBtnGenerateJsonClicked)
@@ -79,7 +86,15 @@ def onProgressIncreased(current_progress):
 
 
 def onComboboxBackClicked(choice):
+   # choice = CTKVAR_COMBOBOXBACK
+    global CHOSEN_CARDBACK
     CHOSEN_CARDBACK = choice
+    #print(choice)
+    global ENTRY_CUSTOMCARDBACK
+    if choice == "Custom":
+        ENTRY_CUSTOMCARDBACK.grid(row=1, columnspan=2)
+    else:
+        ENTRY_CUSTOMCARDBACK.grid_forget()
 
 
 def onBtnGenerateJsonClicked():
@@ -94,7 +109,6 @@ def onBtnGenerateJsonClicked():
 
 def generateJson():
     try:
-        print(utils.__PROGRESS_CALLBACKS__)
         input = TEXTBOX_DECKLIST.get("0.0", "end")
         filename = ENTRY_DECKNAME.get()
         PROGRESS_BAR.step()
@@ -102,7 +116,7 @@ def generateJson():
         PROGRESS_BAR.step()
         PROGRESS_BAR.step()
         PROGRESS_BAR.step()
-        json_builder.makeFullJson(filename, cards_list)
+        json_builder.makeFullJson(filename, cards_list, CHOSEN_CARDBACK)
         PROGRESS_BAR.set(1)
     except Exception as e:
         print(f'ERROR: {e}, {traceback.format_exc()}')

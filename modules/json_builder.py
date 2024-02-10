@@ -6,15 +6,23 @@ import modules.utils as utils
 
 
 TEST_FILEPATH = os.path.dirname(__file__) + "/../tests/json_builder/"
-#TEMPLATE_FILEPATH = TEST_FILEPATH + 'deck_template.json'
 TEMPLATE_FILEPATH = "assets/deck_template.json"
 CARDCUSTOM_FILEPATH = "assets/cardcustom.json"
-#EXPORT_FILEPATH = os.path.dirname(__file__) + "/../exports/"
 EXPORT_FILEPATH = "exports/"
 if not os.path.exists(EXPORT_FILEPATH):
     os.makedirs(EXPORT_FILEPATH)
 
-URL_BACKIMAGE = "http://cloud-3.steamusercontent.com/ugc/998016607072061655/9BE66430CD3C340060773E321DDD5FD86C1F2703/" # from jeandeaual
+ # from jeandeaual
+URL_STANDARD_CARD_BACK = "http://cloud-3.steamusercontent.com/ugc/998016607072061655/9BE66430CD3C340060773E321DDD5FD86C1F2703/"
+URL_JAPANESE_CARD_BACK = "http://cloud-3.steamusercontent.com/ugc/998016607072062006/85BAC9FFDBF402428370296B2FA087285A5BAF7D/"
+
+global URL_BACKIMAGE
+global URL_CUSTOMBACKIMAGE
+
+def setCustomBackImage(link:str):
+    global URL_CUSTOMBACKIMAGE
+    URL_CUSTOMBACKIMAGE = link
+
 
 __USE_HIRES__ = True
 
@@ -31,8 +39,18 @@ __type_letters__ = {
 
 }
 
-def makeFullJson(filename, cards_list):
+def makeFullJson(filename, cards_list, back_image_type="Standard"):
     print("Begun making JSON file.")
+
+    global URL_BACKIMAGE
+    match back_image_type:
+        case "Standard":
+            URL_BACKIMAGE = URL_STANDARD_CARD_BACK
+        case "Japanese":
+            URL_BACKIMAGE = URL_JAPANESE_CARD_BACK
+        case "Custom":
+            URL_BACKIMAGE = URL_CUSTOMBACKIMAGE
+
     template_file = open(utils.resource_path(TEMPLATE_FILEPATH))
     deck_object = json.load(template_file)
    
@@ -165,5 +183,4 @@ def makeDescription(card) -> str:
 
 
 
-#makeFullJson("MyDeckObject", [])
 
