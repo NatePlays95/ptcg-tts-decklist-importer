@@ -1,4 +1,4 @@
-# [WIP] Pokémon TCG to Tabletop Simulator Decklist Importer
+# Pokémon TCG to Tabletop Simulator Decklist Importer
 
 Generates decks for Tabletop Simulator from Pokémon TCG decklists using [PokemonTCG.io API v2](https://pokemontcg.io/)
 
