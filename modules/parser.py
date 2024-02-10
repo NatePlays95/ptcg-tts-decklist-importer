@@ -1,5 +1,6 @@
 from ratelimit import limits, sleep_and_retry
 from datetime import timedelta
+from modules.utils import increaseProgress
 # SDK
 from pokemontcgsdk import Card
 
@@ -18,29 +19,38 @@ def parseDecklistLines(lines:[str]):
     
     for line in lines:
         card_info = parseCardFromLine(line)
-        print("ATTEMPT:", card_info["name"])
-        card = queryCard(card_info)
-        
-        if card == False: # if query failed, # try energy fallback.
-            card_info = parseFallbackEnergy(line)
-            if card_info != {}:
-                card = queryCard(card_info)
-                if card != False:
-                    print("Found energy card via fallback")
-        
-        if card != False:
-            print("FOUND:", line)
-            for i in range(card_info["count"]):
-                cards_list.append(card)
-            continue
+        #print("ATTEMPT:", card_info["name"])
+        try:
+            card = queryCard(card_info)
 
-        print('ERROR:', "couldn't find", line)
+            if card == False: # if query failed, # try energy fallback.
+                card_info = parseFallbackEnergy(line)
+                if card_info != {}:
+                    card = queryCard(card_info)
+                    if card != False:
+                        print("Found energy card via fallback")
+            
+            if card != False:
+                print("FOUND:", line)
+                for i in range(card_info["count"]):
+                    cards_list.append(card)
+                increaseProgress()
+                continue
+
+        except Exception as e:
+            print(f'ERROR: {e}')
+
+        print('FAIL:', "couldn't find", line)
+        increaseProgress()
+        
     
     return cards_list
 
+
+# Requests without API keys need to be limited by 30 reqs per minute
 # TODO: make way to detect lack of api key to throttle calls
 @sleep_and_retry
-@limits(calls=1, period=timedelta(seconds=2).total_seconds())
+@limits(calls=30, period=timedelta(seconds=70).total_seconds())
 def queryCard(card_info):
     card_query = Card.where(q=f'set.ptcgoCode:{card_info["setName"]} number:{card_info["setNumber"]}')
 

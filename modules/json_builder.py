@@ -26,6 +26,7 @@ __type_letters__ = {
 }
 
 def makeFullJson(filename, cards_list):
+    print("Begun making JSON file.")
     template_file = open(TEMPLATE_FILEPATH)
     deck_object = json.load(template_file)
    
@@ -39,6 +40,7 @@ def makeFullJson(filename, cards_list):
 
     save_file = open(EXPORT_FILEPATH + filename+".json", "w")
     json.dump(deck_object, save_file, indent = 2)
+    print("JSON file saved in exports folder.")
 
 
 def makeDeckIdsField(cards_list):
