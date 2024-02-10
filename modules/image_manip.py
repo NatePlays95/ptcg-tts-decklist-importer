@@ -5,15 +5,14 @@ from urllib.request import urlopen
 import requests
 # SDK
 from pokemontcgsdk.cardimage import CardImage
-from pokemontcgsdk import Card
+from pokemontcgsdk import Card, RestClient
 # KEY
-from api_key import API_KEY
 
 
 #### MODULE-WIDE VARIABLES
 
 ## change this to true to download hq scans.
-__USE_HIRES__ = False
+__USE_HIRES__ = True
 
 
 TEST_FILEPATH = os.path.dirname(__file__) + "/../tests/image_manip/"
@@ -29,7 +28,11 @@ TEST_URL_PALAFIN_HIRES = "https://images.pokemontcg.io/sv4pt5/225_hires.png"
 ## Make decks as big atlas images and split them into 70 cards, 10 wide 7 tall.
 
 
-
+def getHeaders():
+    if RestClient.api_key == None:
+        return {"X-Api-Key": ""}
+    else:
+        return {"X-Api-Key": RestClient.api_key}
 
 #### MULTIPLE RES CARD SEARCH
 
@@ -39,14 +42,14 @@ def getAtlas():
 
 def getBackImage(is_japanese=False): # TODO: find the correct japanese back image
     url = "https://images.pokemontcg.io/" # use the fail search image as the back image for now
-    response = requests.get(url, headers = {"X-Api-Key": API_KEY})
+    response = requests.get(url, headers = getHeaders())
     img = Image.open(BytesIO(response.content))
     img = ImageOps.fit(img, (734, 1024))
     return img
 
 def getCardImage(card_image:CardImage):
     url = card_image.large if __USE_HIRES__ else card_image.small
-    response = requests.get(url, headers = {"X-Api-Key": API_KEY})
+    response = requests.get(url, headers = getHeaders())
     img = Image.open(BytesIO(response.content))
     img = ImageOps.fit(img, (734, 1024))
     return img

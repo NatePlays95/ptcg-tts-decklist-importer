@@ -1,8 +1,8 @@
-from ratelimit import limits, sleep_and_retry
+from ratelimit import rate_limited, sleep_and_retry, limits
 from datetime import timedelta
 from modules.utils import increaseProgress
 # SDK
-from pokemontcgsdk import Card
+from pokemontcgsdk import Card, RestClient
 
 lineRegex = "^\s*\**\s*(?P<Count>\d+)\s+(?P<Name>.+)\s+(?P<Set>[A-Za-z0-9_-]+)\s+(?P<NumberInSet>[A-Za-z0-9]+)$"
 __digits_list__ = ['0','1','2','3','4','5','6','7','8','9']
@@ -17,6 +17,8 @@ def parseDecklistLines(lines:[str]):
     cards_list = []
     lines = filterLines(lines)
     
+    print("has api key:", False if RestClient.api_key == None else True)
+
     for line in lines:
         card_info = parseCardFromLine(line)
         #print("ATTEMPT:", card_info["name"])
@@ -38,7 +40,7 @@ def parseDecklistLines(lines:[str]):
                 continue
 
         except Exception as e:
-            print(f'ERROR: {e}')
+            print(f'ERROR: {str(e)}')
 
         print('FAIL:', "couldn't find", line)
         increaseProgress()
@@ -47,10 +49,28 @@ def parseDecklistLines(lines:[str]):
     return cards_list
 
 
-# Requests without API keys need to be limited by 30 reqs per minute
-# TODO: make way to detect lack of api key to throttle calls
+def rateLimitedQueryCard(card_info):
+    query_function = queryCard
+    #if RestClient.api_key == None: # should be limited
+    #    query_function = limits(calls=10,period=70)(sleep_and_retry(queryCard))
+    #else: # shouldn't be limited.
+    #    query_function = limits(calls=1000,period=10)(sleep_and_retry(queryCard))
+    return query_function(card_info)
+
+
+# Requests without API keys need to be limited by 30 reqs per minute. we do 70 seconds to be extra safe.
+# sleep_and_retry helps prevent errors from 429 responses
+# https://stackoverflow.com/questions/75848129/how-to-apply-rate-limit-based-on-method-parameter
+def limits_by_api_key(func):
+    def wrapper(method, *args, **kwargs):
+        return (limited if RestClient.api_key == None else non_limited)(method, *args, **kwargs)
+    limited = limits(calls=30, period=70)(func)
+    non_limited = limits(calls=1000, period=10)(func)
+    return wrapper
+
+
 @sleep_and_retry
-@limits(calls=30, period=timedelta(seconds=70).total_seconds())
+@limits_by_api_key
 def queryCard(card_info):
     card_query = Card.where(q=f'set.ptcgoCode:{card_info["setName"]} number:{card_info["setNumber"]}')
 
@@ -60,7 +80,7 @@ def queryCard(card_info):
         print("trying name fallback on", query_fstring)
         card_query = Card.where(q=query_fstring)
         if card_query != []: 
-            print("Found SV card via name fallback.")
+            print("found SV card via name fallback.")
     
     if len(card_query) > 0:
         if len(card_query) > 1: print("Multiple results??", card_query) # shouldn't happen?

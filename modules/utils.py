@@ -2,11 +2,6 @@ import os
 import sys
 
 
-
-
-
-
-
 # https://stackoverflow.com/questions/31836104/pyinstaller-and-onefile-how-to-include-an-image-in-the-exe-file
 def resource_path(relative_path):
     try:
@@ -17,8 +12,8 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-
 global __PROGRESS__
+__PROGRESS__ = 0
 __PROGRESS_CALLBACKS__ = []
 
 def getProgress():
