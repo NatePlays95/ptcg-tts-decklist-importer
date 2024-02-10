@@ -38,3 +38,8 @@ API_KEY = "your_api_key_as_string"
 python main.py
 ```
    
+## Build instructions
+To build the GUI app, run:
+```sh
+pyinstaller decklist-importer-gui.py --onefile --add-data "assets:assets"
+```
