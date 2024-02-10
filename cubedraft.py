@@ -1,3 +1,8 @@
+## Cube Draft support is simple, but it will have to wait
+## for either PokemonCard or CubeKoga to finish their cubelist exporters.
+## Otherwise there's no universal format to support.
+## You can still try making decks larger than 60 cards and exporting as JSON, however.
+
 from modules.cube_parser import parseCubedraftLines
 from modules.image_manip import makeDeckFromCardList
 from modules.json_builder import makeFullJson
