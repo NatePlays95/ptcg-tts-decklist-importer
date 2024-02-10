@@ -4,7 +4,6 @@ Generates decks for Tabletop Simulator from Pokémon TCG decklists using [Pokemo
 
 Inspired by [TTS Deck Converter](https://github.com/jeandeaual/tts-deckconverter) and [Frogtown](https://www.frogtown.me/)
 
-
 ## Features
 - Exports json files to be opened as TTS saved objects
 - Exports images to be used in TTS custom decks
@@ -22,7 +21,7 @@ Inspired by [TTS Deck Converter](https://github.com/jeandeaual/tts-deckconverter
 ## How to use the GUI executable
 ?
 
-## How to use the Python scripts:
+## How to use the Python scripts
 1. ~~Get a [PokémonTCG.io API key](https://dev.pokemontcg.io/)~~ Works entirely without API keys, but feel free to add those yourself to make the queries faster.
 2. Download the source code in this repo
 3. Install Python 3.10 or newer and dependencies:
@@ -43,3 +42,8 @@ To build the GUI app, run:
 ```sh
 pyinstaller decklist-importer-gui.py --onefile --add-data "assets:assets"
 ```
+
+## Future plans
+- Automatically find TTS's vault/chest/saves folder
+- Support for importing cube draft lists from PokemonCard
+- Support for cards from HGSS and older
