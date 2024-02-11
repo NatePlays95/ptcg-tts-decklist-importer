@@ -4,6 +4,9 @@ Generates decks for Tabletop Simulator from Pokémon TCG decklists using [Pokemo
 
 Inspired by [TTS Deck Converter](https://github.com/jeandeaual/tts-deckconverter) and [Frogtown](https://www.frogtown.me/)
 
+<img src="https://github.com/NatePlays95/ptcg-tts-decklist-importer/blob/main/readme_image_3.png?raw=true" height="400">
+
+
 ## Features
 - Supports cards from Black and White onwards, including cards after Scarlet and Violet
 - Compatible with decklists from: [pokemoncard.io](https://pokemoncard.io) | [limitlesstcg.com](https://limitlesstcg.com) | [ligapokemon.com.br](https://ligapokemon.com.br) 
@@ -17,11 +20,9 @@ Python Script:
 - Also exports images to be used in TTS custom decks
 - Can be set up with an API KEY from PokemonTCG.io to make decks faster.
 
-
-<img src="https://github.com/NatePlays95/ptcg-tts-decklist-importer/blob/main/readme_image_1.jpeg?raw=true" height="400"><img src="https://github.com/NatePlays95/ptcg-tts-decklist-importer/blob/main/readme_image_2.jpeg?raw=true" height="400">
+<img src="https://github.com/NatePlays95/ptcg-tts-decklist-importer/blob/main/readme_image_1.jpeg?raw=true" height="300"><img src="https://github.com/NatePlays95/ptcg-tts-decklist-importer/blob/main/readme_image_2.jpeg?raw=true" height="300">
 
 ## How to use the GUI executable
-<img src="https://github.com/NatePlays95/ptcg-tts-decklist-importer/blob/main/readme_image_3.png?raw=true" height="400">
 
 1. Open the executable ``decklist-importer-gui`` in Releases
 2. Paste your decklist into the textbox
