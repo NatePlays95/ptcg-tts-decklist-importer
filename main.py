@@ -15,6 +15,7 @@ if api_key_exists:
 
 
 INPUT_FILE = 'tests/parser/decklist_accent_marks.txt'
+EXPORT_FILENAME = "MyDeck"
 lines = []
 try:
     with open(INPUT_FILE, 'r', encoding="utf-8") as file:
@@ -28,6 +29,5 @@ except Exception as e:
 cards_list = parseDecklistLines(lines)
 
 # make deck
-filename = "decklist_complete"
-makeDeckFromCardList(filename, cards_list)
-#makeFullJson(filename, cards_list)
+makeDeckFromCardList(EXPORT_FILENAME, cards_list)
+makeFullJson(EXPORT_FILENAME, cards_list)
